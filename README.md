@@ -430,6 +430,7 @@ For the API server, do the following:
 ```shell
 > oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts":{"namedCertificates":[]}}}'
 > oc delete pod -n openshift-apiserver -l app=openshift-apiserver-a
+```
 
 ## Troubleshooting
 
