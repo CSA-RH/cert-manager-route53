@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-credentials
+  namespace: cert-manager
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: "YOUR KEY ID"
+  AWS_SECRET_ACCESS_KEY: "YOUR KEY SECRET"
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-dns
+spec:
+  acme:
+    email: user@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-dns-private-key
+    solvers:
+      - dns01:
+          route53:
+            region: global # e.g., us-east-1
+            accessKeyIDSecretRef:
+              name: aws-credentials
+              key: AWS_ACCESS_KEY_ID
+            secretAccessKeySecretRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
